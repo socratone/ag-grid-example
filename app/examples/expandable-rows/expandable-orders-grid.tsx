@@ -11,11 +11,7 @@ import {
 import { AgGridReact } from "ag-grid-react";
 import { useMemo, useState } from "react";
 
-import type {
-  GridOrderRow,
-  OrdersResponse,
-  ParentOrderRow,
-} from "./types";
+import type { GridOrderRow, OrdersResponse, ParentOrderRow } from "./types";
 
 // Amount 열의 숫자를 미국 달러 형식으로 표시할 때 재사용한다.
 const currencyFormatter = new Intl.NumberFormat("en-US", {
@@ -104,6 +100,10 @@ const ExpandableOrdersGrid = () => {
         lockPosition: true,
         suppressMovable: true,
         resizable: false,
+        cellStyle: {
+          display: "flex",
+          alignItems: "center",
+        },
         cellRenderer: (params: ICellRendererParams<GridOrderRow>) => {
           // 자식 행의 왼쪽 셀은 요구사항에 따라 비워 둔다.
           if (!params.data || params.data.rowType === "child") {
