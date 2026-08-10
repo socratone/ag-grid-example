@@ -39,6 +39,19 @@ pnpm dev
 - 여러 부모 행을 동시에 펼칠 수 있습니다.
 - AG Grid Community 기능만 사용합니다.
 
+### Lazy expandable rows
+
+- 경로: [`/examples/lazy-expandable-rows`](http://localhost:3000/examples/lazy-expandable-rows)
+- 최초 요청에서는 부모 행만 조회합니다.
+- 부모 행의 `+` 버튼을 누르면 해당 부모 ID의 children API를 요청하고 자식 행을 표시합니다.
+- 부모별 로딩 및 오류 재시도 상태를 제공하며 여러 부모 행을 동시에 펼칠 수 있습니다.
+- 한 번 조회한 자식 행은 TanStack Query 캐시를 재사용합니다.
+
+사용하는 API는 다음과 같습니다.
+
+- `GET /api/grid-examples/lazy-expandable-rows`: 부모 행 목록
+- `GET /api/grid-examples/lazy-expandable-rows/[parentId]/children`: 부모별 자식 행 목록
+
 ## 프로젝트 구조
 
 ```text

@@ -5,6 +5,10 @@ const examples = [
     href: "/examples/expandable-rows",
     title: "Expandable rows",
   },
+  {
+    href: "/examples/lazy-expandable-rows",
+    title: "Lazy expandable rows",
+  },
 ];
 
 const Home = () => {
