@@ -1,6 +1,6 @@
 "use client";
 
-import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   AllCommunityModule,
   themeQuartz,
@@ -34,7 +34,7 @@ async function fetchOrders(): Promise<OrdersResponse> {
   return response.json() as Promise<OrdersResponse>;
 }
 
-function ExpandableOrdersGridContent() {
+export default function ExpandableOrdersGrid() {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(() => new Set());
   const ordersQuery = useQuery({
     queryKey: ["grid-example", "expandable-orders"],
@@ -190,25 +190,5 @@ function ExpandableOrdersGridContent() {
         />
       </div>
     </AgGridProvider>
-  );
-}
-
-export default function ExpandableOrdersGrid() {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            retry: 1,
-            staleTime: 60_000,
-          },
-        },
-      }),
-  );
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ExpandableOrdersGridContent />
-    </QueryClientProvider>
   );
 }
