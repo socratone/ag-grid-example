@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AG Grid Example
 
-## Getting Started
+AG Grid의 기능과 구현 패턴을 기능별 페이지로 정리하는 예제 프로젝트입니다.
+행 확장, 셀 렌더링, 데이터 표시처럼 AG Grid를 활용할 때 자주 필요한 동작을 독립된 예제로 제공합니다.
 
-First, run the development server:
+## 기술 스택
+
+- Next.js 16
+- React 19
+- TypeScript
+- AG Grid Community
+- TanStack Query
+- Tailwind CSS
+- pnpm
+
+## 시작하기
+
+의존성을 설치합니다.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+개발 서버를 실행합니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+브라우저에서 [http://localhost:3000](http://localhost:3000)을 엽니다. 루트 페이지에서 각 AG Grid 예제로 이동할 수 있습니다.
 
-## Learn More
+## 예제
 
-To learn more about Next.js, take a look at the following resources:
+### Expandable rows
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- 경로: [`/examples/expandable-rows`](http://localhost:3000/examples/expandable-rows)
+- TanStack Query의 `useQuery`로 로컬 API 데이터를 조회합니다.
+- 부모 행의 `+` 버튼을 누르면 같은 컬럼 구조를 가진 자식 행들이 표시됩니다.
+- 여러 부모 행을 동시에 펼칠 수 있습니다.
+- AG Grid Community 기능만 사용합니다.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 프로젝트 구조
 
-## Deploy on Vercel
+```text
+app/
+├── api/grid-examples/        # 예제에서 사용하는 Route Handler
+├── examples/                 # 기능별 AG Grid 예제 페이지
+├── page.tsx                  # 예제 링크 목록
+└── providers.tsx             # QueryClientProvider, AgGridProvider
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 새로운 예제 추가하기
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. `app/examples/{slug}` 디렉터리에 페이지와 컴포넌트를 추가합니다.
+2. 필요한 경우 `app/api/grid-examples/{slug}`에 샘플 API를 추가합니다.
+3. `app/page.tsx`의 `examples` 배열에 새 페이지 링크를 추가합니다.
+
+React 컴포넌트는 `const` 화살표 함수 형태로 선언합니다.
+
+```tsx
+const ExamplePage = () => {
+  return <ExampleGrid />;
+};
+
+export default ExamplePage;
+```
+
+## 명령어
+
+```bash
+pnpm dev       # 개발 서버 실행
+pnpm lint      # ESLint 검사
+pnpm build     # 프로덕션 빌드
+pnpm start     # 프로덕션 서버 실행
+```
