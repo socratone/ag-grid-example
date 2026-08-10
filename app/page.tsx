@@ -7,7 +7,7 @@ const examples = [
   },
 ];
 
-export default function Home() {
+const Home = () => {
   return (
     <main className="min-h-screen bg-white p-10">
       <nav aria-label="AG Grid 예제 목록">
@@ -26,4 +26,6 @@ export default function Home() {
       </nav>
     </main>
   );
-}
+};
+
+export default Home;

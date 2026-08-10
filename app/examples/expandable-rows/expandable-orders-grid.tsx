@@ -34,7 +34,7 @@ async function fetchOrders(): Promise<OrdersResponse> {
   return response.json() as Promise<OrdersResponse>;
 }
 
-export default function ExpandableOrdersGrid() {
+const ExpandableOrdersGrid = () => {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(() => new Set());
   const ordersQuery = useQuery({
     queryKey: ["grid-example", "expandable-orders"],
@@ -191,4 +191,6 @@ export default function ExpandableOrdersGrid() {
       </div>
     </AgGridProvider>
   );
-}
+};
+
+export default ExpandableOrdersGrid;

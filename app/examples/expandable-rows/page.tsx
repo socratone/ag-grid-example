@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "TanStack Query와 AG Grid를 사용한 확장 행 예제",
 };
 
-export default function ExpandableRowsPage() {
+const ExpandableRowsPage = () => {
   return (
     <main className="min-h-screen bg-white px-4 py-10 sm:px-8">
       <section
@@ -31,4 +31,6 @@ export default function ExpandableRowsPage() {
       </section>
     </main>
   );
-}
+};
+
+export default ExpandableRowsPage;
