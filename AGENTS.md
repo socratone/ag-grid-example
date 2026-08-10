@@ -13,6 +13,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 1. `app/examples/{slug}` 디렉터리에 페이지와 컴포넌트를 추가합니다.
 2. 필요한 경우 `app/api/grid-examples/{slug}`에 샘플 API를 추가합니다.
 3. `app/page.tsx`의 `examples` 배열에 새 페이지 링크를 추가합니다.
+4. 데이터 조회, 상태 변환, AG Grid 설정처럼 예제의 핵심 구현 의도를 설명하는 주석을 추가합니다.
 
 React 컴포넌트는 `const` 화살표 함수 형태로 선언합니다.
 

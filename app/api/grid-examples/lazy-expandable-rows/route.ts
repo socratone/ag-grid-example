@@ -2,6 +2,7 @@ import type { ParentOrdersResponse } from "@/app/examples/lazy-expandable-rows/t
 
 import { orderGroups } from "./data";
 
+// 최초 목록 API에는 children을 포함하지 않아 자식 데이터가 미리 전송되지 않게 한다.
 const response: ParentOrdersResponse = {
   rows: orderGroups.map((group) => ({
     id: group.id,

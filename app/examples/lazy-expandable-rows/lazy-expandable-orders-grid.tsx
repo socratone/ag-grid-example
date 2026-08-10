@@ -15,6 +15,7 @@ import type {
   ParentOrdersResponse,
 } from "./types";
 
+// Amount 열의 숫자를 미국 달러 형식으로 표시할 때 재사용한다.
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -31,6 +32,8 @@ async function fetchParentOrders(): Promise<ParentOrdersResponse> {
   return response.json() as Promise<ParentOrdersResponse>;
 }
 
+// 부모 ID를 URL에 포함해 해당 그룹의 자식 행만 요청한다.
+// AbortSignal을 전달하면 행이 더 이상 쿼리를 구독하지 않을 때 요청을 취소할 수 있다.
 async function fetchChildOrders(
   parentId: string,
   signal: AbortSignal,
@@ -48,8 +51,10 @@ async function fetchChildOrders(
 }
 
 const LazyExpandableOrdersGrid = () => {
+  // 현재 펼치도록 요청한 부모 ID를 저장하며 여러 행을 동시에 펼칠 수 있다.
   const [expandedIds, setExpandedIds] = useState<Set<string>>(() => new Set());
 
+  // 최초에는 children이 제외된 부모 행 목록만 조회한다.
   const parentsQuery = useQuery({
     queryKey: ["grid-example", "lazy-expandable-orders", "parents"],
     queryFn: fetchParentOrders,
@@ -59,6 +64,9 @@ const LazyExpandableOrdersGrid = () => {
     () => parentsQuery.data?.rows ?? [],
     [parentsQuery.data],
   );
+
+  // 모든 부모에 안정적인 query key를 부여하되 펼쳐진 부모의 쿼리만 활성화한다.
+  // 접었다가 다시 펼치면 QueryClient의 staleTime 동안 기존 children 캐시를 재사용한다.
   const childQueries = useQueries({
     queries: parents.map((parent) => ({
       queryKey: [
@@ -72,6 +80,7 @@ const LazyExpandableOrdersGrid = () => {
     })),
   });
 
+  // 셀 렌더러와 rowData 변환에서 부모 ID로 쿼리 상태를 빠르게 찾을 수 있게 한다.
   const childQueriesByParentId = useMemo(
     () =>
       new Map(
@@ -80,6 +89,8 @@ const LazyExpandableOrdersGrid = () => {
     [childQueries, parents],
   );
 
+  // AG Grid는 평탄한 배열을 받으므로 조회가 끝난 children을 부모 바로 뒤에 배치한다.
+  // 아직 로딩 중이거나 실패한 부모는 부모 행만 유지한다.
   const rowData = useMemo<GridOrderRow[]>(() => {
     return parents.flatMap((parent) => {
       const parentRow: GridOrderRow = { ...parent, rowType: "parent" };
@@ -99,6 +110,7 @@ const LazyExpandableOrdersGrid = () => {
     });
   }, [childQueriesByParentId, expandedIds, parents]);
 
+  // 최초 자식 조회가 실패한 행은 닫는 대신 같은 버튼으로 다시 요청할 수 있게 한다.
   const toggleExpanded = useCallback(
     (parentId: string) => {
       const childQuery = childQueriesByParentId.get(parentId);
@@ -123,6 +135,7 @@ const LazyExpandableOrdersGrid = () => {
     [childQueriesByParentId],
   );
 
+  // 왼쪽 확장 열은 부모별 쿼리 상태에 따라 +, −, spinner, retry 기호를 표시한다.
   const columnDefs = useMemo<ColDef<GridOrderRow>[]>(
     () => [
       {
@@ -201,6 +214,7 @@ const LazyExpandableOrdersGrid = () => {
     ],
     [childQueriesByParentId, expandedIds, parents, toggleExpanded]);
 
+  // 부모 목록의 첫 요청 상태는 그리드 전체의 로딩 및 오류 화면으로 처리한다.
   if (parentsQuery.isPending) {
     return (
       <div className="grid h-140 place-content-center rounded-lg border border-slate-200 text-slate-600">
@@ -227,6 +241,7 @@ const LazyExpandableOrdersGrid = () => {
     );
   }
 
+  // 자식 조회 상태는 그리드를 숨기지 않고 각 부모 행의 확장 버튼에서 처리한다.
   return (
     <div className="h-140 overflow-hidden rounded-lg border border-slate-200">
       <AgGridReact<GridOrderRow>

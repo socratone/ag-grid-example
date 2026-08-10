@@ -9,6 +9,7 @@ export async function GET(
   >,
 ) {
   const { parentId } = await context.params;
+  // 동적 경로의 부모 ID에 해당하는 children만 별도 응답한다.
   const group = orderGroups.find((candidate) => candidate.id === parentId);
 
   if (!group) {
