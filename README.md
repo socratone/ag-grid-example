@@ -56,33 +56,15 @@ pnpm dev
 
 ```text
 app/
-├── api/grid-examples/        # 예제에서 사용하는 Route Handler
-├── examples/                 # 기능별 AG Grid 예제 페이지
-├── page.tsx                  # 예제 링크 목록
-└── providers.tsx             # QueryClientProvider, AgGridProvider
-```
-
-## 새로운 예제 추가하기
-
-1. `app/examples/{slug}` 디렉터리에 페이지와 컴포넌트를 추가합니다.
-2. 필요한 경우 `app/api/grid-examples/{slug}`에 샘플 API를 추가합니다.
-3. `app/page.tsx`의 `examples` 배열에 새 페이지 링크를 추가합니다.
-
-React 컴포넌트는 `const` 화살표 함수 형태로 선언합니다.
-
-```tsx
-const ExamplePage = () => {
-  return <ExampleGrid />;
-};
-
-export default ExamplePage;
-```
-
-## 명령어
-
-```bash
-pnpm dev       # 개발 서버 실행
-pnpm lint      # ESLint 검사
-pnpm build     # 프로덕션 빌드
-pnpm start     # 프로덕션 서버 실행
+├── api/grid-examples/
+│   ├── expandable-rows/                 # 부모와 자식을 함께 반환하는 API
+│   └── lazy-expandable-rows/
+│       ├── [parentId]/children/         # 부모별 자식 행 API
+│       ├── data.ts                      # 공유 샘플 주문 데이터
+│       └── route.ts                     # 부모 행 목록 API
+├── examples/
+│   ├── expandable-rows/                 # 일반 확장 행 예제
+│   └── lazy-expandable-rows/            # API 지연 조회 확장 행 예제
+├── page.tsx                             # 예제 링크 목록
+└── providers.tsx                        # QueryClientProvider, AgGridProvider
 ```
